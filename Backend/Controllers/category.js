@@ -12,7 +12,7 @@ const addCategory = asyncErrorWrapper(async  (req,res,next)=> {
             description,
             author : req.user.id
         })
-        
+
         return res.status(200).json({
             success :true ,
             message : "add category successfully ",
@@ -90,5 +90,6 @@ const deleteCategory  =asyncErrorWrapper(async(req,res,next)=>{
 module.exports ={
     addCategory,
     editCategory ,
-    deleteCategory
+    deleteCategory,
+    getAllCategories
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react'
+import React, { useRef, useContext, useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
@@ -22,6 +22,24 @@ const AddStory = () => {
     const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
 
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const { data } = await axios.get("/story/getallcategories", config)
+                setAllCategories(data.data)
+            }
+            catch (error) {
+                setError(error.response.data.error)
+                setTimeout(() => {
+                    setError('')
+                }, 7000)
+            }
+        }
+        fetchCategories()
+    }, [config])
+
+
     const clearInputs = () => {
         setTitle('')
         setContent('')
@@ -34,6 +52,7 @@ const AddStory = () => {
         e.preventDefault();
         const formdata = new FormData()
         formdata.append("title", title)
+        formdata.append("category", category)
         formdata.append("image", image)
         formdata.append("content", content)
 
@@ -72,6 +91,18 @@ const AddStory = () => {
                     </span>
                     <Link to="/">Go home</Link>
                 </div>}
+                <h5>Choose Category</h5>
+                <select
+                    onChange={(e) => setCategory(e.target.value)}
+                    value={category}
+                    required
+                    id={"category"}
+                >
+                    <option value="">Select Category</option>
+                    {allCategories.map((category) => (
+                        <option key={category._id} value={category._id}>{category.category}</option>
+                    ))}
+                </select>
                 <h5>Add Blog</h5>
                 <input
                     type="text"
@@ -82,7 +113,7 @@ const AddStory = () => {
                     value={title}
                 />
 
-                
+
 
                 <CKEditor
                     editor={ClassicEditor}
