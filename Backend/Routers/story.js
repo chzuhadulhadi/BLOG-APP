@@ -3,12 +3,18 @@ const imageupload = require("../Helpers/Libraries/imageUpload");
 
 const { getAccessToRoute } = require("../Middlewares/Authorization/auth");
 const {addStory,getAllStories,detailStory,likeStory, editStory, deleteStory, editStoryPage } = require("../Controllers/story")
+const { addCategory ,editCategory,deleteCategory} = require("../Controllers/category");
 const { checkStoryExist, checkUserAndStoryExist } = require("../Middlewares/database/databaseErrorhandler");
 
-const router = express.Router() ;
+const router = express.Router();
+
+router.post('/addcategory', [getAccessToRoute], addCategory)
+
+router.put('/editcategory/:id', [getAccessToRoute], editCategory)
+
+router.delete('/deletecategory/:id', [getAccessToRoute], deleteCategory)
 
 router.post("/addstory" ,[getAccessToRoute, imageupload.single("image")],addStory)
-
 
 router.post("/:slug", checkStoryExist, detailStory)
 

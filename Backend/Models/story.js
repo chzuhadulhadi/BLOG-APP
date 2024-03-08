@@ -2,6 +2,7 @@
 const mongoose = require("mongoose")
 const Comment = require("./comment")
 const slugify = require("slugify")
+const Category = require("./category")
 
 const StorySchema = new mongoose.Schema({
 
@@ -16,6 +17,11 @@ const StorySchema = new mongoose.Schema({
         required: [true, "Please provide a title"],
         unique: true,
         minlength: [4, "Please provide a title least 4 characters "],
+    },
+    category: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Category",
+        required: true
     },
     content: {
         type: String,

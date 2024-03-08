@@ -16,6 +16,7 @@ import ChangePassword from './components/ProfileScreens/ChangePassword';
 import NotFound from './components/GeneralScreens/NotFound';
 import EditStory from './components/StoryScreens/EditStory';
 import ReadListPage from './components/ProfileScreens/ReadListPage';
+import AddCategory from './components/StoryScreens/AddCategory';
 
 const App = () => {
 
@@ -37,6 +38,10 @@ const App = () => {
 
                                     <Route exact path='/addstory' element={<PrivateRoute />}>
                                           <Route exact path='/addstory' element={<AddStory />} />
+                                    </Route>
+
+                                    <Route exact path='/addcategory' element={<PrivateRoute />}>
+                                          <Route exact path='/addcategory' element={<AddCategory />} />
                                     </Route>
 
                                     <Route exact path='/profile' element={<PrivateRoute />}>

@@ -15,6 +15,8 @@ const AddStory = () => {
     const imageEl = useRef(null)
     const editorEl = useRef(null)
     const [image, setImage] = useState('')
+    const [allCategories, setAllCategories] = useState([]);
+    const [category, setCategory] = useState('')
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [success, setSuccess] = useState('')
@@ -70,7 +72,7 @@ const AddStory = () => {
                     </span>
                     <Link to="/">Go home</Link>
                 </div>}
-
+                <h5>Add Blog</h5>
                 <input
                     type="text"
                     required
@@ -79,6 +81,8 @@ const AddStory = () => {
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
                 />
+
+                
 
                 <CKEditor
                     editor={ClassicEditor}
