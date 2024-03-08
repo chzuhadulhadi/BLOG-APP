@@ -12,6 +12,7 @@ import CommentSidebar from '../CommentScreens/CommentSidebar';
 
 const DetailStory = () => {
   const [likeStatus, setLikeStatus] = useState(false)
+  const [category, setCategory] = useState([])
   const [likeCount, setLikeCount] = useState(0)
   const [activeUser, setActiveUser] = useState({})
   const [story, setStory] = useState({})
@@ -50,6 +51,7 @@ const DetailStory = () => {
         setLikeCount(data.data.likeCount)
         setStoryLikeUser(data.data.likes)
         setLoading(false)
+        setCategory(data.data.category)
 
         const story_id = data.data._id;
 
@@ -168,7 +170,9 @@ const DetailStory = () => {
                   <FiArrowLeft />
                 </Link>
                 <h5>{story.title}</h5>
-
+                <h5>
+                  {category}
+                </h5>
                 <div className='story-general-info'>
 
                   <ul>

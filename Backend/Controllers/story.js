@@ -1,5 +1,6 @@
 const asyncErrorWrapper = require("express-async-handler")
 const Story = require("../Models/story");
+const Category = require("../Models/category");
 const deleteImageFile = require("../Helpers/Libraries/deleteImageFile");
 const {searchHelper, paginateHelper} =require("../Helpers/query/queryHelpers")
 
@@ -52,12 +53,21 @@ const getAllStories = asyncErrorWrapper( async (req,res,next) =>{
     query = query.sort("-likeCount -commentCount -createdAt")
 
     const stories = await query
-    
+
+    //replace catergory id with category name
+    for (let i = 0; i < stories.length; i++) {
+        const categoryId = stories[i].category;
+        const category = await Category.findById(categoryId);
+        console.log(category.category)
+        stories[i].categoryname = category.category;
+    }
+    const newObj = stories.map(({category,categoryname,title,content,author,createdAt,readtime,likeCount,commentCount,slug,image}) => ({image,category,categoryname,title,content,author,createdAt,readtime,likeCount,commentCount,slug}))
+
     return res.status(200).json(
         {
             success:true,
             count : stories.length,
-            data : stories ,
+            data : newObj ,
             page : paginationResult.page ,
             pages : paginationResult.pages
         })
