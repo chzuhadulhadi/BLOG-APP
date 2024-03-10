@@ -77,23 +77,37 @@ const getAllStories = asyncErrorWrapper( async (req,res,next) =>{
 const detailStory =asyncErrorWrapper(async(req,res,next)=>{
 
     const {slug}=req.params ;
-    const {activeUser} =req.body 
+    // const {activeUser} =req.body 
 
     const story = await Story.findOne({
         slug: slug 
-    }).populate("author likes")
+    })
 
-    const storyLikeUserIds = story.likes.map(json => json.id)
-    const likeStatus = storyLikeUserIds.includes(activeUser._id)
+    const relatedStories = await Story.find({
+        slug : { $ne: story.slug }
+    });
+
+    for (let i = 0; i < relatedStories.length; i++) {
+        const categoryId = relatedStories[i].category;
+        const category = await Category.findById(categoryId);
+        console.log(category.category)
+        relatedStories[i].categoryname = category.category;
+    }
+
+    const newObj = relatedStories.map(({category,categoryname,title,content,author,createdAt,readtime,likeCount,commentCount,slug,image}) => ({image,category,categoryname,title,content,author,createdAt,readtime,likeCount,commentCount,slug}))
 
 
-    return res.status(200).
-        json({
+    const categoryId = story.category;
+    const category = await Category.findById(categoryId);
+    console.log(category.category)
+    story.categoryname = category.category;
+
+    return res.status(200).json({
             success:true,
             data : story,
-            likeStatus:likeStatus
+            categoryname:category.category,
+            relatedStories:newObj
         })
-
 })
 
 const likeStory =asyncErrorWrapper(async(req,res,next)=>{
